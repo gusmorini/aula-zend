@@ -18,19 +18,11 @@ $telefone = $_POST['telefone'];
 $assunto = $_POST['assunto'];
 $detalhes = $_POST['detalhes'];
 
-//$driver = new Mysqli($connection);
-//$adapter = new Adapter($driver);
-//$config = new Config(require 'config.php');
-
 $serviceManager = new ServiceManager();
 $serviceManager->setService('config', require 'config.php');
 $serviceManager->setFactory('DbAdapter', 'Zend\Db\Adapter\AdapterServiceFactory');
 
 $adapter = $serviceManager->get('DbAdapter');
-
-//echo get_class($adapter);
-// $sql = "INSERT INTO solicitante() VALUES()";
-// $adapter->query($sql);
 
 function bancoInsert ($tabela, $coluna, $valor, $adapter) {
     $insert = new Insert($tabela);
@@ -44,16 +36,21 @@ $select = new Select('solicitante');
 $select->columns(['cpf'])->where(['cpf'=>$cpf]);
 $sql = $select->getSqlString($adapter->getPlatform());
 $statement = $adapter->query($sql);
-$result = $statement->execute();
+$res1 = $statement->execute();
 
-if (count($result) > 0) {
+$select = new Select('assunto');
+$select->columns(['assunto'])->where(['assunto'=>$assunto]);
+$sql = $select->getSqlString($adapter->getPlatform());
+$statement = $adapter->query($sql);
+$res2 = $statement->execute();
 
-    // cpf já existe
+$url = "formulario.php";
 
-    $error = "CPF já cadastrado";
+if ((count($res1) > 0) OR (count($res2) > 0)) {
 
-    $url = "/aula-zend/demanda/formulario.php";
-    $url.= "?error=CPF já cadastrado";
+    $error = (count($res1) > 0 ? "CPF já cadastrado" : "Assunto duplicado");
+
+    $url.= "?error=$error";
     $url.= "&nome=$nome";
     $url.= "&cpf=$cpf";
     $url.= "&cep=$cep";
@@ -64,8 +61,6 @@ if (count($result) > 0) {
     $url.= "&telefone=$telefone";
     $url.= "&assunto=$assunto";
     $url.= "&detalhes=$detalhes";
-
-    header("Location:$url");
 
 } else {
 
@@ -95,6 +90,8 @@ if (count($result) > 0) {
     $valor = [$cpf, $codigo_assunto];
     bancoInsert($tabela, $coluna, $valor, $adapter);
 
-    echo "Cadastro Realizado";
-
+    $url.= "?msg=Cadastro Realizado!";
+    
 }
+
+header("Location:$url");
