@@ -2,6 +2,8 @@
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\Db\Sql\Insert;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 
 require "vendor/autoload.php";
 
@@ -30,7 +32,7 @@ $adapter = $serviceManager->get('DbAdapter');
 // $sql = "INSERT INTO solicitante() VALUES()";
 // $adapter->query($sql);
 
-function banco ($tabela, $coluna, $valor, $adapter) {
+function bancoInsert ($tabela, $coluna, $valor, $adapter) {
     $insert = new Insert($tabela);
     $insert->columns($coluna)->values($valor);
     $sql = $insert->getSqlString($adapter->getPlatform());
@@ -38,15 +40,44 @@ function banco ($tabela, $coluna, $valor, $adapter) {
     $insertedRows = $statement->execute();
 }
 
+$select = new Select('solicitante');
+$select->columns(['cpf'])->where(['cpf'=>$cpf]);
+$sql = $select->getSqlString($adapter->getPlatform());
+$statement = $adapter->query($sql);
+$result = $statement->execute();
 
-$tabela = 'solicitante';
-$coluna = ['cpf','nome','CEP','municipio','UF','email','ddd','telefone'];
-$valor = [$cpf,$nome,$cep,$municipio,$uf,$email,$ddd,$telefone];
+if (count($result) > 0) {
 
-banco($tabela, $coluna, $valor, $adapter);
+    echo "CPF já cadastrado";
 
-$tabela = 'assunto';
-$coluna = ['assunto','detalhes'];
-$valor = [$assunto, $detalhes];
+} else {
 
-banco($tabela, $coluna, $valor, $adapter);
+    $tabela = 'solicitante';
+    $coluna = ['cpf','nome','CEP','municipio','UF','email','ddd','telefone'];
+    $valor = [$cpf,$nome,$cep,$municipio,$uf,$email,$ddd,$telefone];
+    bancoInsert($tabela, $coluna, $valor, $adapter);
+
+    $tabela = 'assunto';
+    $coluna = ['assunto','detalhes'];
+    $valor = [$assunto, $detalhes];
+    bancoInsert($tabela, $coluna, $valor, $adapter);
+
+    $expression = new Expression('max(codigo)');
+    $select = new Select('assunto');
+    $select->columns(['codigoAssunto' => $expression]);
+    $sql = $select->getSqlString($adapter->getPlatform());
+    $statement = $adapter->query($sql);
+    $result = $statement->execute();
+    $codigo_assunto = $result->current()['codigoAssunto'];
+
+    //fecha a conexão 
+    $adapter->getDriver()->getConnection()->disconnect();
+
+    $tabela = 'demanda';
+    $coluna = ['codigo_solicitante','codigo_assunto'];
+    $valor = [$cpf, $codigo_assunto];
+    bancoInsert($tabela, $coluna, $valor, $adapter);
+
+    echo "Cadastro Realizado";
+
+}

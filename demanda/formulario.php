@@ -14,16 +14,26 @@
 
     <form action="processar.php" method="POST">
     
-        <input type="text" name="cpf" placeholder="CPF">
-        <input type="text" name="nome" placeholder="nome do solicitante">
-        <input type="text" name="cep" placeholder="CEP">
-        <input type="text" name="municipio" placeholder="Município">
-        <input type="text" name="uf" placeholder="UF">
-        <input type="email" name="email" placeholder="E-mail">
-        <input type="text" name="ddd" placeholder="DDD">
-        <input type="text" name="telefone" placeholder="telefone">
-        <input type="text" name="assunto" placeholder="assunto">
-        <textarea name="detalhes" id="" cols="30" rows="10" placeholder="detalhes"></textarea>
+        <label>Nome do solicitante</label>
+        <input type="text" name="nome">
+        <label>CPF</label>
+        <input type="text" name="cpf">
+        <label>CEP</label>
+        <input type="text" name="cep">
+        <label>Município</label>
+        <input type="text" name="municipio">
+        <label>UF</label>
+        <input type="text" name="uf">
+        <label>E-mail</label>
+        <input type="email" name="email">
+        <label>DDD</label>
+        <input type="text" name="ddd">
+        <label>Telefone</label>
+        <input type="text" name="telefone">
+        <label>Assunto</label>
+        <input type="text" name="assunto">
+        <label>Detalhes</label>
+        <textarea name="detalhes" id="" cols="30" rows="7"></textarea>
 
         <button type="submit">gravar</button>
     

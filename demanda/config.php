@@ -4,9 +4,9 @@
 
     return [
       'db' => [
-          'driver' => 'Mysqli',
-          'username' => 'root',
-          'password' => '',
+          'driver' => 'Pdo_Mysql',
+          'username' => 'admin',
+          'password' => 'admin',
           'database' => 'alfa',
           'host' => 'localhost'
       ]  
