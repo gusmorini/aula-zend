@@ -48,7 +48,24 @@ $result = $statement->execute();
 
 if (count($result) > 0) {
 
-    echo "CPF já cadastrado";
+    // cpf já existe
+
+    $error = "CPF já cadastrado";
+
+    $url = "/aula-zend/demanda/formulario.php";
+    $url.= "?error=CPF já cadastrado";
+    $url.= "&nome=$nome";
+    $url.= "&cpf=$cpf";
+    $url.= "&cep=$cep";
+    $url.= "&municipio=$municipio";
+    $url.= "&uf=$uf";
+    $url.= "&email=$email";
+    $url.= "&ddd=$ddd";
+    $url.= "&telefone=$telefone";
+    $url.= "&assunto=$assunto";
+    $url.= "&detalhes=$detalhes";
+
+    header("Location:$url");
 
 } else {
 

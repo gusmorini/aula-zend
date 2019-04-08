@@ -12,28 +12,42 @@
 
     <h1>Sistema de atendimento a demanda</h1>
 
+    <?php
+
+        if ($_GET['error']) {
+
+            $html = "<h3>";
+            $html.=  $_GET['error'];
+            $html.= "</h3>";
+
+            echo $html;
+        }
+
+    ?>
+
+
     <form action="processar.php" method="POST">
     
         <label>Nome do solicitante</label>
-        <input type="text" name="nome">
+        <input type="text" name="nome" value="<?=($_GET['nome']) ? $_GET['nome'] : '';?>"/>
         <label>CPF</label>
-        <input type="text" name="cpf">
+        <input type="text" name="cpf" value="<?=($_GET['cpf']) ? $_GET['cpf'] : '';?>">
         <label>CEP</label>
-        <input type="text" name="cep">
+        <input type="text" name="cep" value="<?=($_GET['cep']) ? $_GET['cep'] : '';?>">
         <label>Município</label>
-        <input type="text" name="municipio">
+        <input type="text" name="municipio" value="<?=($_GET['municipio']) ? $_GET['municipio'] : '';?>">
         <label>UF</label>
-        <input type="text" name="uf">
+        <input type="text" name="uf" value="<?=($_GET['uf']) ? $_GET['uf'] : '';?>">
         <label>E-mail</label>
-        <input type="email" name="email">
+        <input type="email" name="email" value="<?=($_GET['email']) ? $_GET['email'] : '';?>">
         <label>DDD</label>
-        <input type="text" name="ddd">
+        <input type="text" name="ddd" value="<?=($_GET['ddd']) ? $_GET['ddd'] : '';?>">
         <label>Telefone</label>
-        <input type="text" name="telefone">
+        <input type="text" name="telefone" value="<?=($_GET['telefone']) ? $_GET['telefone'] : '';?>">
         <label>Assunto</label>
-        <input type="text" name="assunto">
+        <input type="text" name="assunto" value="<?=($_GET['assunto']) ? $_GET['assunto'] : '';?>">
         <label>Detalhes</label>
-        <textarea name="detalhes" id="" cols="30" rows="7"></textarea>
+        <textarea name="detalhes" id="" cols="30" rows="7"><?=($_GET['detalhes']) ? $_GET['detalhes'] : '';?></textarea>
 
         <button type="submit">gravar</button>
     
